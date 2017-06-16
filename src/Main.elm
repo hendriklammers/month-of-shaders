@@ -77,10 +77,7 @@ update msg model =
 
 selectShader : Int -> List ShaderObject -> Maybe ShaderObject
 selectShader n shaders =
-    if List.length shaders < n then
-        Nothing
-    else
-        List.head (List.drop n shaders)
+    List.head (List.drop n shaders)
 
 
 
@@ -124,8 +121,6 @@ view model =
         [ id "container" ]
         [ viewCanvas model
         , viewNavigation model.shaders
-
-        -- , viewLog model
         ]
 
 
@@ -188,24 +183,6 @@ canvasStyle width height =
     , ( "width", toString width ++ "px" )
     , ( "height", toString height ++ "px" )
     , ( "background", "#000" )
-    ]
-
-
-viewLog : Model -> Html Msg
-viewLog model =
-    div
-        [ style logStyle ]
-        [ toString model.time |> text ]
-
-
-logStyle : List ( String, String )
-logStyle =
-    [ ( "position", "fixed" )
-    , ( "left", "0" )
-    , ( "top", "0" )
-    , ( "padding", "5px 10px" )
-    , ( "font", "14px Helvetica, sans-serif" )
-    , ( "background", "#fff" )
     ]
 
 
