@@ -20,23 +20,9 @@ import Types exposing (..)
 type alias Model =
     { size : Size
     , time : Time
-    , activeShader : ShaderObject
+    , activeShader : Maybe ShaderObject
     , shaders : List ShaderObject
     }
-
-
-initialModel : Model
-initialModel =
-    { size = Size 0 0
-    , time = 0
-    , activeShader = ShaderObject "Day 1" Day1.shader
-    , shaders = []
-    }
-
-
-init : ( Model, Cmd Msg )
-init =
-    ( initialModel, Task.perform WindowResize Window.size )
 
 
 shaders : List ShaderObject
@@ -44,6 +30,20 @@ shaders =
     [ ShaderObject "Day 1" Day1.shader
     , ShaderObject "Testing title" Day2.shader
     ]
+
+
+initialModel : Model
+initialModel =
+    { size = Size 0 0
+    , time = 0
+    , activeShader = List.head shaders
+    , shaders = shaders
+    }
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( initialModel, Task.perform WindowResize Window.size )
 
 
 
@@ -102,20 +102,25 @@ mesh =
 
 viewCanvas : Model -> Html Msg
 viewCanvas { size, time, activeShader } =
-    toHtml
-        [ id "canvas"
-        , width size.width
-        , height size.height
-        , style (canvasStyle size.width size.height)
-        ]
-        [ entity
-            vertexShader
-            activeShader.fragment
-            mesh
-            { u_resolution = vec2 (toFloat size.width) (toFloat size.height)
-            , u_time = time / 1000
-            }
-        ]
+    case activeShader of
+        Nothing ->
+            text "No shader available"
+
+        Just shader ->
+            toHtml
+                [ id "canvas"
+                , width size.width
+                , height size.height
+                , style (canvasStyle size.width size.height)
+                ]
+                [ entity
+                    vertexShader
+                    shader.fragment
+                    mesh
+                    { u_resolution = vec2 (toFloat size.width) (toFloat size.height)
+                    , u_time = time / 1000
+                    }
+                ]
 
 
 canvasStyle : Int -> Int -> List ( String, String )
