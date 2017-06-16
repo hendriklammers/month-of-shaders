@@ -3,12 +3,14 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (id, width, height, style)
 import Math.Vector2 exposing (Vec2, vec2)
-import Math.Vector3 exposing (Vec3, vec3)
-import WebGL exposing (triangles, Mesh, Shader, Entity, entity, toHtml)
+import WebGL exposing (entity, triangles, toHtml, Mesh)
 import Window exposing (Size)
 import Task
 import AnimationFrame
 import Time exposing (Time)
+import Shader.Fragment exposing (fragmentShader)
+import Shader.Vertex exposing (vertexShader)
+import Types exposing (..)
 
 
 -- MODEL
@@ -20,9 +22,14 @@ type alias Model =
     }
 
 
+initialModel : Model
+initialModel =
+    { size = Size 0 0, time = 0 }
+
+
 init : ( Model, Cmd Msg )
 init =
-    ( { size = Size 0 0, time = 0 }, Task.perform WindowResize Window.size )
+    ( initialModel, Task.perform WindowResize Window.size )
 
 
 
@@ -45,26 +52,19 @@ update msg model =
 
 
 
--- SHADERS
+-- SUBSCRIPTIONS
 
 
-type alias Uniforms =
-    { u_resolution : Vec2
-    , u_time : Float
-    }
-
-
-type alias Varying =
-    { v_fragCoord : Vec2 }
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.batch
+        [ Window.resizes WindowResize
+        , AnimationFrame.diffs TimeUpdate
+        ]
 
 
 
 -- MESH
-
-
-type alias Vertex =
-    { position : Vec2
-    }
 
 
 mesh : Mesh Vertex
@@ -78,58 +78,6 @@ mesh =
           , (Vertex (vec2 1 -1))
           , (Vertex (vec2 1 1))
           )
-        ]
-
-
-
--- SHADERS
-
-
-vertexShader : Shader Vertex Uniforms Varying
-vertexShader =
-    [glsl|
-
-    precision mediump float;
-
-    attribute vec2 position;
-    uniform vec2 u_resolution;
-    uniform float u_time;
-    varying vec2 v_fragCoord; // Not used, can use gl_FragCoord instead?
-
-    void main () {
-        gl_Position = vec4(position, 0.0, 1.0);
-        v_fragCoord = (position + 1.0) / 2.0 * u_resolution;
-    }
-
-    |]
-
-
-fragmentShader : Shader {} Uniforms Varying
-fragmentShader =
-    [glsl|
-
-    precision mediump float;
-
-    uniform vec2 u_resolution;
-    uniform float u_time;
-    varying vec2 v_fragCoord;
-
-    void main () {
-        gl_FragColor = vec4(0.7, 0.7, 0.7, 1.0);
-    }
-
-|]
-
-
-
--- SUBSCRIPTIONS
-
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.batch
-        [ Window.resizes WindowResize
-        , AnimationFrame.diffs TimeUpdate
         ]
 
 
