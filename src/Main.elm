@@ -1,17 +1,19 @@
 module Main exposing (..)
 
-import Html exposing (..)
-import Html.Attributes exposing (id, width, height, style)
-import Math.Vector2 exposing (Vec2, vec2)
-import WebGL exposing (entity, triangles, toHtml, Mesh)
-import Window exposing (Size)
-import Task
 import AnimationFrame
-import Time exposing (Time)
+import Html exposing (..)
+import Html.Attributes exposing (id, width, height, style, href, class)
+import Html.Events exposing (onClick, onWithOptions)
+import Json.Decode as Decode
+import Math.Vector2 exposing (Vec2, vec2)
 import Shader.Day1 as Day1
 import Shader.Day2 as Day2
 import Shader.Vertex exposing (vertexShader)
+import Task
+import Time exposing (Time)
 import Types exposing (..)
+import WebGL exposing (entity, triangles, toHtml, Mesh)
+import Window exposing (Size)
 
 
 -- MODEL
@@ -53,6 +55,7 @@ init =
 type Msg
     = WindowResize Size
     | TimeUpdate Time
+    | ChangeShader Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -63,6 +66,21 @@ update msg model =
 
         TimeUpdate time ->
             ( { model | time = model.time + time }, Cmd.none )
+
+        ChangeShader index ->
+            let
+                active =
+                    selectShader index model.shaders
+            in
+                ( { model | activeShader = active }, Cmd.none )
+
+
+selectShader : Int -> List ShaderObject -> Maybe ShaderObject
+selectShader n shaders =
+    if List.length shaders < n then
+        Nothing
+    else
+        List.head (List.drop n shaders)
 
 
 
@@ -98,6 +116,47 @@ mesh =
 
 
 -- VIEW
+
+
+view : Model -> Html Msg
+view model =
+    div
+        [ id "container" ]
+        [ viewCanvas model
+        , viewNavigation model.shaders
+
+        -- , viewLog model
+        ]
+
+
+viewNavigation : List ShaderObject -> Html Msg
+viewNavigation shaders =
+    nav [ class "navigation" ]
+        [ ul []
+            (List.indexedMap viewLink shaders)
+        ]
+
+
+onLinkClick : Msg -> Attribute Msg
+onLinkClick msg =
+    onWithOptions
+        "click"
+        { stopPropagation = True
+        , preventDefault = True
+        }
+        (Decode.succeed msg)
+
+
+viewLink : Int -> ShaderObject -> Html Msg
+viewLink n shader =
+    li []
+        [ a
+            [ href "#"
+            , onLinkClick (ChangeShader n)
+            , class "navigation__link"
+            ]
+            [ text (toString <| n + 1) ]
+        ]
 
 
 viewCanvas : Model -> Html Msg
@@ -148,16 +207,6 @@ logStyle =
     , ( "font", "14px Helvetica, sans-serif" )
     , ( "background", "#fff" )
     ]
-
-
-view : Model -> Html Msg
-view model =
-    div
-        [ id "container" ]
-        [ viewCanvas model
-
-        -- , viewLog model
-        ]
 
 
 
