@@ -1,0 +1,14 @@
+{
+  "name": "daily-shader",
+  "version": "1.0.0",
+  "description": "One GLSL shader every day",
+  "scripts": {
+    "start": "elm-live src/Main.elm --output=public/elm.js --dir=public --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hendrik Lammers <lammers@gmail.com> (http://www.hendriklammers.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "elm-live": "^2.7.4"
+  }
+}
