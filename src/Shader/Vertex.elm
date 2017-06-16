@@ -4,7 +4,7 @@ import WebGL exposing (Shader)
 import Types exposing (..)
 
 
-vertexShader : Shader Vertex Uniforms Varying
+vertexShader : VertexShader
 vertexShader =
     [glsl|
 

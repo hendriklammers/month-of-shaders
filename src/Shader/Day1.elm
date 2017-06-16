@@ -1,11 +1,11 @@
-module Shader.Fragment exposing (..)
+module Shader.Day1 exposing (..)
 
 import WebGL exposing (Shader)
 import Types exposing (..)
 
 
-fragmentShader : Shader {} Uniforms Varying
-fragmentShader =
+shader : Shader {} Uniforms Varying
+shader =
     [glsl|
 
     precision mediump float;
@@ -15,7 +15,7 @@ fragmentShader =
     varying vec2 v_fragCoord;
 
     void main () {
-        gl_FragColor = vec4(0.2, 0.0, 0.7, 1.0);
+        gl_FragColor = vec4(1.0, 0.0, 0.2, 1.0);
     }
 
 |]

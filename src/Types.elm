@@ -24,5 +24,11 @@ type alias FragmentShader =
     Shader {} Uniforms Varying
 
 
+type alias VertexShader =
+    Shader Vertex Uniforms Varying
+
+
 type alias ShaderObject =
-    {}
+    { name : String
+    , fragment : FragmentShader
+    }

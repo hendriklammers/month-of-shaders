@@ -8,7 +8,8 @@ import Window exposing (Size)
 import Task
 import AnimationFrame
 import Time exposing (Time)
-import Shader.Fragment exposing (fragmentShader)
+import Shader.Day1 as Day1
+import Shader.Day2 as Day2
 import Shader.Vertex exposing (vertexShader)
 import Types exposing (..)
 
@@ -19,17 +20,30 @@ import Types exposing (..)
 type alias Model =
     { size : Size
     , time : Time
+    , activeShader : ShaderObject
+    , shaders : List ShaderObject
     }
 
 
 initialModel : Model
 initialModel =
-    { size = Size 0 0, time = 0 }
+    { size = Size 0 0
+    , time = 0
+    , activeShader = ShaderObject "Day 1" Day1.shader
+    , shaders = []
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
     ( initialModel, Task.perform WindowResize Window.size )
+
+
+shaders : List ShaderObject
+shaders =
+    [ ShaderObject "Day 1" Day1.shader
+    , ShaderObject "Testing title" Day2.shader
+    ]
 
 
 
@@ -59,7 +73,8 @@ subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.batch
         [ Window.resizes WindowResize
-        , AnimationFrame.diffs TimeUpdate
+
+        -- , AnimationFrame.diffs TimeUpdate
         ]
 
 
@@ -86,7 +101,7 @@ mesh =
 
 
 viewCanvas : Model -> Html Msg
-viewCanvas { size, time } =
+viewCanvas { size, time, activeShader } =
     toHtml
         [ id "canvas"
         , width size.width
@@ -95,7 +110,7 @@ viewCanvas { size, time } =
         ]
         [ entity
             vertexShader
-            fragmentShader
+            activeShader.fragment
             mesh
             { u_resolution = vec2 (toFloat size.width) (toFloat size.height)
             , u_time = time / 1000
