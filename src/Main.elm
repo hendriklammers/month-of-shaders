@@ -141,7 +141,21 @@ view model =
         [ id "container" ]
         [ viewCanvas model
         , viewNavigation model.shaders
+        , viewPause (not model.animating)
         ]
+
+
+viewPause : Bool -> Html Msg
+viewPause paused =
+    if paused then
+        div
+            [ class "pause" ]
+            [ span
+                []
+                [ text "Paused (Press SPACE to resume)" ]
+            ]
+    else
+        text ""
 
 
 viewNavigation : List ShaderObject -> Html Msg

@@ -16,7 +16,7 @@ type alias Uniforms =
 
 
 type alias Varying =
-    { v_fragCoord : Vec2 }
+    {}
 
 
 type alias FragmentShader =
@@ -28,6 +28,7 @@ type alias VertexShader =
 
 
 type alias ShaderObject =
-    { name : String
+    { title : String
+    , date : String
     , fragment : FragmentShader
     }
