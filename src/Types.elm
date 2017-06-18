@@ -12,6 +12,7 @@ type alias Vertex =
 type alias Uniforms =
     { u_resolution : Vec2
     , u_time : Float
+    , u_mouse : Vec2
     }
 
 

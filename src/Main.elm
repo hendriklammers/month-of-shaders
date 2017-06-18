@@ -16,6 +16,7 @@ import Shader.Day1 as Day1
 import Shader.Day2 as Day2
 import Shader.Tutorial as Tutorial
 import Keyboard
+import Mouse exposing (Position)
 
 
 -- MODEL
@@ -27,6 +28,7 @@ type alias Model =
     , activeShader : Maybe ShaderObject
     , shaders : List ShaderObject
     , animating : Bool
+    , position : Position
     }
 
 
@@ -37,6 +39,7 @@ initialModel =
     , activeShader = List.head shaders
     , shaders = shaders
     , animating = False
+    , position = Position 0 0
     }
 
 
@@ -62,6 +65,7 @@ type Msg
     | TimeUpdate Time
     | ChangeShader Int
     | KeyPress Int
+    | MouseMove Position
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -86,6 +90,9 @@ update msg model =
             else
                 model ! []
 
+        MouseMove position ->
+            ( { model | position = position }, Cmd.none )
+
 
 selectShader : Int -> List ShaderObject -> Maybe ShaderObject
 selectShader n shaders =
@@ -102,6 +109,7 @@ subscriptions model =
         [ Window.resizes WindowResize
         , animationSubscription model.animating
         , Keyboard.presses (\keycode -> KeyPress keycode)
+        , Mouse.moves MouseMove
         ]
 
 
@@ -189,7 +197,7 @@ viewLink n shader =
 
 
 viewCanvas : Model -> Html Msg
-viewCanvas { size, time, activeShader } =
+viewCanvas { size, time, activeShader, position } =
     case activeShader of
         Nothing ->
             text "No shader available"
@@ -210,6 +218,10 @@ viewCanvas { size, time, activeShader } =
                             (toFloat size.width)
                             (toFloat size.height)
                     , u_time = time / 1000
+                    , u_mouse =
+                        vec2
+                            (toFloat position.x)
+                            (toFloat position.y)
                     }
                 ]
 
