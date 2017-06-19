@@ -2,7 +2,16 @@ module Main exposing (..)
 
 import AnimationFrame
 import Html exposing (..)
-import Html.Attributes exposing (id, width, height, style, href, class)
+import Html.Attributes
+    exposing
+        ( id
+        , width
+        , height
+        , style
+        , href
+        , class
+        , classList
+        )
 import Html.Events exposing (onClick, onWithOptions)
 import Json.Decode as Decode
 import Math.Vector2 exposing (Vec2, vec2)
@@ -45,9 +54,9 @@ initialModel =
 
 shaders : List ShaderObject
 shaders =
-    [ ShaderObject "Tutorial" "17/06/2017" Tutorial.shader
-    , ShaderObject "Day 1" "17/06/2017" Day1.shader
-    , ShaderObject "Testing title" "18/06/2017" Day2.shader
+    [ ShaderObject 0 "Tutorial" "17/06/2017" Tutorial.shader
+    , ShaderObject 1 "Day 1" "17/06/2017" Day1.shader
+    , ShaderObject 2 "Testing title" "18/06/2017" Day2.shader
     ]
 
 
@@ -148,7 +157,7 @@ view model =
     div
         [ id "container" ]
         [ viewCanvas model
-        , viewNavigation model.shaders
+        , viewNavigation model
         , viewPause (not model.animating)
         ]
 
@@ -166,11 +175,38 @@ viewPause paused =
         text ""
 
 
-viewNavigation : List ShaderObject -> Html Msg
-viewNavigation shaders =
+isShaderActive : Maybe ShaderObject -> ShaderObject -> Bool
+isShaderActive active current =
+    case active of
+        Just shader ->
+            shader.id == current.id
+
+        Nothing ->
+            False
+
+
+viewLink : Maybe ShaderObject -> Int -> ShaderObject -> Html Msg
+viewLink active index shader =
+    li []
+        [ a
+            [ href "#"
+            , onLinkClick (ChangeShader index)
+            , classList
+                [ ( "navigation__link", True )
+                , ( "navigation__link--active"
+                  , isShaderActive active shader
+                  )
+                ]
+            ]
+            [ text (toString <| index + 1) ]
+        ]
+
+
+viewNavigation : Model -> Html Msg
+viewNavigation { shaders, activeShader } =
     nav [ class "navigation" ]
         [ ul []
-            (List.indexedMap viewLink shaders)
+            (List.indexedMap (viewLink activeShader) shaders)
         ]
 
 
@@ -182,18 +218,6 @@ onLinkClick msg =
         , preventDefault = True
         }
         (Decode.succeed msg)
-
-
-viewLink : Int -> ShaderObject -> Html Msg
-viewLink n shader =
-    li []
-        [ a
-            [ href "#"
-            , onLinkClick (ChangeShader n)
-            , class "navigation__link"
-            ]
-            [ text (toString <| n + 1) ]
-        ]
 
 
 viewCanvas : Model -> Html Msg

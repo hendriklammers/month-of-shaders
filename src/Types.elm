@@ -29,7 +29,8 @@ type alias VertexShader =
 
 
 type alias ShaderObject =
-    { title : String
+    { id : Int
+    , title : String
     , date : String
     , fragment : FragmentShader
     }

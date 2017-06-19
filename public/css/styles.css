@@ -23,21 +23,24 @@ ul {
   top: 0;
   bottom: 0;
   right: 0;
-  padding: 10px;
   background: #fff;
 }
 
-.navigation__item {
-  margin: 2px 0;
-}
-
 .navigation__link {
+  display: block;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
   text-decoration: none;
   color: #333;
+  transition: all 0.15s ease-out;
 }
 
+.navigation__link--active,
 .navigation__link:hover {
-  text-decoration: underline;
+  background: #ddd;
 }
 
 .pause {
