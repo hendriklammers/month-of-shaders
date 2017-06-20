@@ -187,8 +187,9 @@ isShaderActive active current =
 
 viewLink : Maybe ShaderObject -> Int -> ShaderObject -> Html Msg
 viewLink active index shader =
-    li []
-        [ a
+    li [ class "navigation__item" ]
+        [ viewTooltip shader.date
+        , a
             [ href "#"
             , onLinkClick (ChangeShader index)
             , classList
@@ -200,6 +201,13 @@ viewLink active index shader =
             ]
             [ text (toString <| index + 1) ]
         ]
+
+
+viewTooltip : String -> Html Msg
+viewTooltip str =
+    span
+        [ class "tooltip" ]
+        [ text str ]
 
 
 viewNavigation : Model -> Html Msg
