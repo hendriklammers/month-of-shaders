@@ -21,10 +21,9 @@ import Time exposing (Time)
 import Types exposing (..)
 import WebGL exposing (entity, triangles, toHtml, Mesh)
 import Window exposing (Size)
-import Shader.Day1 as Day1
-import Shader.Day2 as Day2
 import Keyboard
 import Mouse exposing (Position)
+import Shaders exposing (shaders)
 
 
 -- MODEL
@@ -44,18 +43,11 @@ initialModel : Model
 initialModel =
     { size = Size 0 0
     , time = 0
-    , activeShader = List.head shaders
+    , activeShader = List.head <| List.reverse shaders
     , shaders = shaders
     , animating = False
     , mouse = Position 0 0
     }
-
-
-shaders : List ShaderObject
-shaders =
-    [ ShaderObject 0 "Day 1" "17/06/2017" Day1.shader
-    , ShaderObject 1 "Testing title" "18/06/2017" Day2.shader
-    ]
 
 
 init : ( Model, Cmd Msg )
