@@ -23,7 +23,6 @@ import WebGL exposing (entity, triangles, toHtml, Mesh)
 import Window exposing (Size)
 import Shader.Day1 as Day1
 import Shader.Day2 as Day2
-import Shader.Tutorial as Tutorial
 import Keyboard
 import Mouse exposing (Position)
 
@@ -54,9 +53,8 @@ initialModel =
 
 shaders : List ShaderObject
 shaders =
-    [ ShaderObject 0 "Tutorial" "17/06/2017" Tutorial.shader
-    , ShaderObject 1 "Day 1" "17/06/2017" Day1.shader
-    , ShaderObject 2 "Testing title" "18/06/2017" Day2.shader
+    [ ShaderObject 0 "Day 1" "17/06/2017" Day1.shader
+    , ShaderObject 1 "Testing title" "18/06/2017" Day2.shader
     ]
 
 
