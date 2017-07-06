@@ -37,7 +37,7 @@ type alias Model =
     , activeShader : Maybe ShaderObject
     , shaders : List ShaderObject
     , animating : Bool
-    , position : Position
+    , mouse : Position
     }
 
 
@@ -48,7 +48,7 @@ initialModel =
     , activeShader = List.head shaders
     , shaders = shaders
     , animating = False
-    , position = Position 0 0
+    , mouse = Position 0 0
     }
 
 
@@ -99,8 +99,9 @@ update msg model =
             else
                 model ! []
 
+        -- TODO: Invert mouse position?
         MouseMove position ->
-            ( { model | position = position }, Cmd.none )
+            ( { model | mouse = position }, Cmd.none )
 
 
 selectShader : Int -> List ShaderObject -> Maybe ShaderObject
@@ -229,7 +230,7 @@ onLinkClick msg =
 
 
 viewCanvas : Model -> Html Msg
-viewCanvas { size, time, activeShader, position } =
+viewCanvas { size, time, activeShader, mouse } =
     case activeShader of
         Nothing ->
             text "No shader available"
@@ -252,8 +253,9 @@ viewCanvas { size, time, activeShader, position } =
                     , u_time = time / 1000
                     , u_mouse =
                         vec2
-                            (toFloat position.x)
-                            (toFloat position.y)
+                            (toFloat mouse.x)
+                            -- Inverting mouse.y so it matches gl_FragCoord.y
+                            (toFloat <| size.height - mouse.y)
                     }
                 ]
 
