@@ -81,7 +81,7 @@ update msg model =
                 active =
                     selectShader index model.shaders
             in
-                ( { model | activeShader = active }, Cmd.none )
+                ( { model | activeShader = active, time = 0 }, Cmd.none )
 
         KeyPress char ->
             if char == 32 then
