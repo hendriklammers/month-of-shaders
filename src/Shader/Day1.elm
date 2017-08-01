@@ -10,34 +10,32 @@ shader =
 
     precision mediump float;
 
+    // Contains the width and height of the screen in pixels
     uniform vec2 u_resolution;
-    uniform vec2 u_mouse;
+    // Playback time in seconds
     uniform float u_time;
 
-    void main () {
-        vec2 coord = gl_FragCoord.xy / u_resolution;
-        vec2 mouse = u_mouse.xy / u_resolution;
+    // Returns a float indicating whether the coord (uv) is inside (1.0) or outside (0.0) the circle
+    float circle(vec2 uv, vec2 center, float radius) {
+        // Distance from current coordinate to center
+        float dist = length(uv - center);
+        // Using smoothstep to add antialiasing
+        return 1.0 - smoothstep(radius - 0.002, radius + 0.002, dist);
+    }
 
+    void main () {
+        // Use cartesian coordinate system
+        vec2 uv = 2.0 * vec2(gl_FragCoord.xy - 0.5 * u_resolution.xy) / u_resolution.y;
+
+        vec3 red = vec3(0.8, 0.0, 0.0);
+        vec3 green = vec3(0.0, 0.8, 0.0);
+        vec3 blue = vec3(0.0, 0.0, 0.8);
         vec3 color = vec3(0.0);
 
-        if (coord.x <= 0.25) {
-            float amount = coord.x / 0.25;
-            color.r = amount - (coord.y);
-        }
-        else if (coord.x > 0.25 && coord.x <= 0.5) {
-            float amount = ((coord.x - 0.25) / 0.25);
-            color.r = 1.0 - amount;
-            color.g = amount;
-        }
-        else if (coord.x > 0.5 && coord.x <= 0.75) {
-            float amount = ((coord.x - 0.5) / 0.25);
-            color.g = 1.0 - amount;
-            color.b = amount;
-        }
-        else if (coord.x > 0.75) {
-            float amount = ((coord.x - 0.75) / 0.25);
-            color.b = 1.0 - amount;
-        }
+        // Draw circles in center of screen and use the time uniform to animate the radius
+        color = mix(color, blue, circle(uv, vec2(0.0), abs(sin(u_time + 0.3)) * 0.25 + 0.05));
+        color = mix(color, green, circle(uv, vec2(0.0), abs(sin(u_time + 0.15)) * 0.15 + 0.05));
+        color = mix(color, red, circle(uv, vec2(0.0), abs(sin(u_time)) * 0.05 + 0.05));
 
         gl_FragColor = vec4(color, 1.0);
     }
