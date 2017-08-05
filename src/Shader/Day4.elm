@@ -28,10 +28,11 @@ shader =
         float t = abs(fract(u_time * 0.3) * 2.0 - 1.0);
         // Apply SineInOut easing to the t value
         t = -0.5 * (cos(PI * t) - 1.0);
-        // Size of the gradient: between 0.01 and 0.2
-        float g = 0.19 * t + 0.01;
+        // Size of the gradient: between 0.001 and 0.199
+        // Needs to be above 0.0 otherwise some flickering happens?
+        float g = 0.199 * t + 0.001;
         // Make animation go to max 0.7 instead of 1.0
-        float a = t * 0.7;
+        float a = t * 0.65 + 0.05;
 
         // red/blue animated gradient
         vec3 color = mix(blue, red, smoothstep(a - g, a + g, r.y));
