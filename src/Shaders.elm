@@ -7,6 +7,7 @@ import Shader.Day3 as Day3
 import Shader.Day4 as Day4
 import Shader.Day5 as Day5
 import Shader.Day6 as Day6
+import Shader.Day7 as Day7
 
 
 shaders : List ShaderObject
@@ -16,5 +17,6 @@ shaders =
     , ShaderObject 3 "Another Mondrian inspired composition" "03/08/2017" Day3.shader
     , ShaderObject 4 "Animated gradient" "04/08/2017" Day4.shader
     , ShaderObject 5 "Rotating pyramids" "05/08/2017" Day5.shader
-    , ShaderObject 6 "Horizontal lines" "06/08/2017" Day6.shader
+    , ShaderObject 6 "Horizontal line noise" "06/08/2017" Day6.shader
+    , ShaderObject 7 "Black and white line waves" "07/08/2017" Day7.shader
     ]
