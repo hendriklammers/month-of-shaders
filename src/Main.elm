@@ -34,7 +34,7 @@ type alias Model =
     , time : Time
     , activeShader : Maybe ShaderObject
     , shaders : List ShaderObject
-    , animating : Bool
+    , paused : Bool
     , mouse : Position
     }
 
@@ -45,7 +45,7 @@ initialModel =
     , time = 0
     , activeShader = List.head <| List.reverse shaders
     , shaders = shaders
-    , animating = False
+    , paused = True
     , mouse = Position 0 0
     }
 
@@ -85,7 +85,7 @@ update msg model =
 
         KeyPress char ->
             if char == 32 then
-                ( { model | animating = not model.animating }, Cmd.none )
+                ( { model | paused = not model.paused }, Cmd.none )
             else
                 model ! []
 
@@ -107,18 +107,18 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Window.resizes WindowResize
-        , animationSubscription model.animating
+        , animationSubscription model.paused
         , Keyboard.presses (\keycode -> KeyPress keycode)
         , Mouse.moves MouseMove
         ]
 
 
 animationSubscription : Bool -> Sub Msg
-animationSubscription animating =
-    if animating then
-        AnimationFrame.diffs TimeUpdate
-    else
+animationSubscription paused =
+    if paused then
         Sub.none
+    else
+        AnimationFrame.diffs TimeUpdate
 
 
 
@@ -149,7 +149,7 @@ view model =
         [ id "container" ]
         [ viewCanvas model
         , viewNavigation model
-        , viewPause (not model.animating)
+        , viewPause model.paused
         ]
 
 
