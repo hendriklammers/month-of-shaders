@@ -107,18 +107,20 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Window.resizes WindowResize
-        , animationSubscription model.paused
         , Keyboard.presses (\keycode -> KeyPress keycode)
-        , Mouse.moves MouseMove
+        , pausableSubscription model.paused
         ]
 
 
-animationSubscription : Bool -> Sub Msg
-animationSubscription paused =
+pausableSubscription : Bool -> Sub Msg
+pausableSubscription paused =
     if paused then
         Sub.none
     else
-        AnimationFrame.diffs TimeUpdate
+        Sub.batch
+            [ AnimationFrame.diffs TimeUpdate
+            , Mouse.moves MouseMove
+            ]
 
 
 
