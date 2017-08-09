@@ -108,12 +108,12 @@ subscriptions model =
     Sub.batch
         [ Window.resizes WindowResize
         , Keyboard.presses (\keycode -> KeyPress keycode)
-        , pausableSubscription model.paused
+        , pausableSubscriptions model.paused
         ]
 
 
-pausableSubscription : Bool -> Sub Msg
-pausableSubscription paused =
+pausableSubscriptions : Bool -> Sub Msg
+pausableSubscriptions paused =
     if paused then
         Sub.none
     else
