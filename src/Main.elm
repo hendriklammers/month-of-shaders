@@ -89,7 +89,6 @@ update msg model =
             else
                 model ! []
 
-        -- TODO: Invert mouse position?
         MouseMove position ->
             ( { model | mouse = position }, Cmd.none )
 
