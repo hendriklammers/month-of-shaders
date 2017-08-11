@@ -65,11 +65,15 @@ type Msg
     | ChangeShader Int
     | KeyPress Int
     | MouseMove Position
+    | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        NoOp ->
+            model ! []
+
         WindowResize size ->
             ( { model | size = size }, Cmd.none )
 
@@ -221,7 +225,7 @@ onLinkClick enabled msg =
             if enabled then
                 Decode.succeed msg
             else
-                Decode.fail ""
+                Decode.succeed NoOp
     in
         onWithOptions
             "click"
