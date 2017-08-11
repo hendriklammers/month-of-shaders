@@ -12,7 +12,7 @@ import Html.Attributes
         , class
         , classList
         )
-import Html.Events exposing (onClick, onWithOptions)
+import Html.Events exposing (onWithOptions)
 import Json.Decode as Decode
 import Math.Vector2 exposing (Vec2, vec2)
 import Shader.Vertex exposing (vertexShader)
@@ -179,20 +179,24 @@ isShaderActive active current =
 
 viewLink : Maybe ShaderObject -> Int -> ShaderObject -> Html Msg
 viewLink active index shader =
-    li [ class "navigation__item" ]
-        [ viewTooltip shader.date
-        , a
-            [ href "#"
-            , onLinkClick (ChangeShader index)
-            , classList
-                [ ( "navigation__link", True )
-                , ( "navigation__link--active"
-                  , isShaderActive active shader
-                  )
+    let
+        isActive =
+            isShaderActive active shader
+    in
+        li [ class "navigation__item" ]
+            [ viewTooltip shader.date
+            , a
+                [ href "#"
+                , onLinkClick (not isActive) (ChangeShader index)
+                , classList
+                    [ ( "navigation__link", True )
+                    , ( "navigation__link--active"
+                      , isActive
+                      )
+                    ]
                 ]
+                [ text (toString <| index + 1) ]
             ]
-            [ text (toString <| index + 1) ]
-        ]
 
 
 viewTooltip : String -> Html Msg
@@ -210,14 +214,21 @@ viewNavigation { shaders, activeShader } =
         ]
 
 
-onLinkClick : Msg -> Attribute Msg
-onLinkClick msg =
-    onWithOptions
-        "click"
-        { stopPropagation = True
-        , preventDefault = True
-        }
-        (Decode.succeed msg)
+onLinkClick : Bool -> Msg -> Attribute Msg
+onLinkClick enabled msg =
+    let
+        decoder =
+            if enabled then
+                Decode.succeed msg
+            else
+                Decode.fail ""
+    in
+        onWithOptions
+            "click"
+            { stopPropagation = True
+            , preventDefault = True
+            }
+            decoder
 
 
 viewCanvas : Model -> Html Msg

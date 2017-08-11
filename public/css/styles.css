@@ -44,6 +44,10 @@ ul {
   color: #333;
 }
 
+.navigation__link--active {
+  cursor: default;
+}
+
 .navigation__link--active,
 .navigation__link:hover {
   background: #ddd;
