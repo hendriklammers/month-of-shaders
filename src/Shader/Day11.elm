@@ -35,7 +35,7 @@ shader =
         float f = length(cos(p * 18.0)) * 2.0;
 
         // Amount of variation to be added to the size of the distance field
-        float r = t * 0.8 + 0.2;
+        float r = t * 0.8 + 0.13;
         // Circular distance field that follows mouse
         f *= pow(distance(uv, m) * 3.7 + r, 2.0);
 
