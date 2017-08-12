@@ -12,6 +12,7 @@ import Shader.Day8 as Day8
 import Shader.Day9 as Day9
 import Shader.Day10 as Day10
 import Shader.Day11 as Day11
+import Shader.Day12 as Day12
 
 
 shaders : List ShaderObject
@@ -26,5 +27,6 @@ shaders =
     , ShaderObject 8 "Circlular distance fields" "08/08/2017" Day8.shader
     , ShaderObject 9 "Radial plasma" "09/08/2017" Day9.shader
     , ShaderObject 10 "2 circles" "10/08/2017" Day10.shader
-    , ShaderObject 11 "Day 11" "11/08/2017" Day11.shader
+    , ShaderObject 11 "Follow mouse" "11/08/2017" Day11.shader
+    , ShaderObject 12 "Day 12" "12/08/2017" Day12.shader
     ]
