@@ -11,7 +11,6 @@ shader =
     precision mediump float;
 
     uniform vec2 u_resolution;
-    uniform vec2 u_mouse;
     uniform float u_time;
 
     vec2 mapUV(vec2 coord) {
@@ -25,15 +24,16 @@ shader =
     void main () {
         vec2 uv = mapUV(gl_FragCoord.xy);
         vec2 p = abs(uv);
-        // Mouse: 1.0 - 0.0 - 1.0
-        vec2 m = abs(mapUV(u_mouse.xy));
         // Split screen horizizontally in 20-40 parts
-        float i = fract(p.x * (20.0 + m.x * 20.0));
+        float i = fract(p.x * (40.0));
         // Rotate coordinates from center
         p -= 0.5;
         p *= rotate(i + u_time * 0.5);
 
-        vec3 color = vec3(p.x / p.y, p.y * p.x * abs(sin(u_time)), abs(sin(p.x + u_time)));
+        float r = p.x / p.y;
+        float g = p.y * p.x * abs(sin(u_time));
+        float b = abs(sin(p.x + u_time));
+        vec3 color = vec3(r, g, b);
 
         gl_FragColor = vec4(color,1.0);
     }
