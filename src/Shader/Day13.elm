@@ -17,8 +17,8 @@ shader =
         return (2.0 * coord.xy - u_resolution) / min(u_resolution.x, u_resolution.y);
     }
 
-    mat2 rotate(float angle) {
-        return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+    mat2 rotate(float theta) {
+        return mat2(cos(theta), -sin(theta), sin(theta), cos(theta));
     }
 
     void main () {
