@@ -15,6 +15,7 @@ import Shader.Day11 as Day11
 import Shader.Day12 as Day12
 import Shader.Day13 as Day13
 import Shader.Day14 as Day14
+import Shader.Day15 as Day15
 
 
 shaders : List ShaderObject
@@ -33,4 +34,5 @@ shaders =
     , ShaderObject 12 "Day 12" "12/08/2017" Day12.shader
     , ShaderObject 13 "Day 13" "13/08/2017" Day13.shader
     , ShaderObject 14 "Distorted circle" "14/08/2017" Day14.shader
+    , ShaderObject 15 "Rotating polygons" "15/08/2017" Day15.shader
     ]
