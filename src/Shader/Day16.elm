@@ -31,9 +31,9 @@ shader =
         // Solid shapes instead of blurred transitions
         pct = smoothstep(0.0, 0.05, pct);
         vec3 pink = vec3(0.949, 0.153, 0.714);
-        vec3 black = vec3(0.024, 0.024, 0.024);
+        vec3 black = vec3(0.0);
         vec3 color = mix(black, pink, pct);
-        color = mix(color, black, pow(dist, 2.0) * 0.7);
+        color = mix(color, black, smoothstep(0.2, 1.0, length(uv * 0.7)));
         gl_FragColor = vec4(color,1.0);
     }
 
