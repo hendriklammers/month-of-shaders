@@ -22,7 +22,7 @@ shader =
         vec2 uv = mapUV(gl_FragCoord.xy);
         vec2 mouse = mapUV(u_mouse.xy);
         // Subtle mouse movement based on mouse distance from center
-        uv += mouse * 0.04 * length(uv);
+        uv -= mouse * 0.08 * (1.0 - length(uv));
         float dist = length(uv);
         float angle = atan(uv.y, uv.x);
         float speed = u_time * 3.25;
@@ -31,10 +31,9 @@ shader =
         // Solid shapes instead of blurred transitions
         pct = smoothstep(0.0, 0.05, pct);
         vec3 pink = vec3(0.949, 0.153, 0.714);
-        // Darken on outsides
-        vec3 color2 = pink * 1.0 - dist * 0.7;
-        vec3 color = vec3(0.024, 0.024, 0.024);
-        color = mix(color, color2, pct);
+        vec3 black = vec3(0.024, 0.024, 0.024);
+        vec3 color = mix(black, pink, pct);
+        color = mix(color, black, pow(dist, 2.0) * 0.7);
         gl_FragColor = vec4(color,1.0);
     }
 
