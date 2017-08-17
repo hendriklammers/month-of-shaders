@@ -61,6 +61,7 @@ ul {
   right: 32px;
   top: 0;
   padding: 0 5px;
+  height: 24px;
   background: #fff;
   transition: all 0.10s ease-out;
   transform: translateX(-8px);
