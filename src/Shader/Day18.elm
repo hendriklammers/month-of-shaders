@@ -19,7 +19,8 @@ shader =
 
     void main () {
         vec2 uv = mapUV(gl_FragCoord.xy);
-        float t = abs(fract(u_time * 0.7 + sin(uv.y * 26.0) * 0.1) * 0.2) * 2.0 - 1.0);
+        float r = sin(uv.y * 26.0) * 0.02;
+        float t = abs(fract(u_time * 0.6 + r) * 2.0 - 1.0);
         vec2 p = vec2(uv.x, uv.y * 1.2 - abs(uv.x) * (1.15 - abs(uv.x)));
         p *= 1.2 - pow(t, 4.0) * 0.2;
         float c = 1.0 / abs(length(vec2(0.3)) - length(p)) * 0.02;
