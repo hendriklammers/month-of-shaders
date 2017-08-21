@@ -22,6 +22,7 @@ shader =
         vec2 uv = mapUV(gl_FragCoord.xy);
         vec2 mouse = mapUV(u_mouse.xy);
         // Subtle mouse movement based on mouse distance from center
+        uv *= 1.3;
         uv -= mouse * 0.08 * (1.0 - length(uv));
         float dist = length(uv);
         float angle = atan(uv.y, uv.x);
