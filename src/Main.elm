@@ -12,7 +12,7 @@ import Html.Attributes
         , class
         , classList
         )
-import Html.Events exposing (onWithOptions)
+import Html.Events exposing (onWithOptions, onClick)
 import Json.Decode as Decode
 import Math.Vector2 exposing (Vec2, vec2)
 import Shader.Vertex exposing (vertexShader)
@@ -65,6 +65,7 @@ type Msg
     | ChangeShader Int
     | KeyPress Int
     | MouseMove Position
+    | PauseClick
     | NoOp
 
 
@@ -95,6 +96,9 @@ update msg model =
 
         MouseMove position ->
             ( { model | mouse = position }, Cmd.none )
+
+        PauseClick ->
+            ( { model | paused = not model.paused }, Cmd.none )
 
 
 selectShader : Int -> List ShaderObject -> Maybe ShaderObject
@@ -164,7 +168,7 @@ viewPause paused =
         div
             [ class "pause" ]
             [ span
-                []
+                [ onClick PauseClick ]
                 [ text "Paused (Press SPACE to resume)" ]
             ]
     else
