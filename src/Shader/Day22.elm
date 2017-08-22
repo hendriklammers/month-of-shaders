@@ -14,6 +14,9 @@ shader =
     uniform vec2 u_mouse;
     uniform float u_time;
 
+    const vec3 c1 = vec3(0.345, 0.129, 0.831);
+    const vec3 c2 = vec3(0.824, 0.984, 0.471);
+
     vec2 mapUV(vec2 coord) {
         return (2.0 * coord.xy - u_resolution) / min(u_resolution.x, u_resolution.y);
     }
@@ -38,7 +41,7 @@ shader =
 
         float df1 = dfSphere(p, 0.45);
         float df2 = dfBox(p, vec3(0.4));
-        // Cut sphere from box
+        // Substract sphere from box
         return max(-df1, df2);
     }
 
@@ -66,7 +69,7 @@ shader =
 
         float t = trace(ro, rd);
         float fog = 1.0 / (1.0 + pow(t, 3.0) * 0.3);
-        vec3 color = vec3(fog);
+        vec3 color = mix(c1, c2, fog);
 
         gl_FragColor = vec4(color, 1.0);
     }
