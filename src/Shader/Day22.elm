@@ -51,7 +51,7 @@ shader =
         for (int i = 0; i < 32; i++) {
             vec3 p = ro + rd * t;
             float d = distanceField(p);
-            t += d * 0.5;
+            t += d * 0.45;
         }
         return t;
     }
@@ -61,7 +61,7 @@ shader =
         vec2 mouse = mapUV(u_mouse);
 
         // ray origin
-        vec3 ro = vec3(0.0, 0.0, u_time);
+        vec3 ro = vec3(0.0, 0.0, u_time * 0.7);
         // ray direction
         vec3 rd = normalize(vec3(uv, 1.0));
         rd.xz *= rotate(-mouse.x * 0.2);
