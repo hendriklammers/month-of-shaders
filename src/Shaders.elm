@@ -25,6 +25,7 @@ import Shader.Day21 as Day21
 import Shader.Day22 as Day22
 import Shader.Day23 as Day23
 import Shader.Day24 as Day24
+import Shader.Day25 as Day25
 
 
 shaders : List ShaderObject
@@ -53,4 +54,5 @@ shaders =
     , ShaderObject 22 "Ray tracing pt2" "22/08/2017" Day22.shader
     , ShaderObject 23 "Random lights" "23/08/2017" Day23.shader
     , ShaderObject 24 "Ray tracing pt3" "24/08/2017" Day24.shader
+    , ShaderObject 25 "Ray tracing pt4" "25/08/2017" Day25.shader
     ]
