@@ -60,11 +60,12 @@ ul {
   position: absolute;
   right: 32px;
   top: 0;
-  padding: 0 5px;
-  height: 24px;
+  padding: 0 5px 0 8px;
   background: #fff;
+  line-height: 24px;
   transition: all 0.10s ease-out;
   transform: translateX(-8px);
+  white-space: nowrap;
 }
 
 .navigation__item:hover .tooltip {
