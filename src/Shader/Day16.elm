@@ -11,7 +11,6 @@ shader =
     precision mediump float;
 
     uniform vec2 u_resolution;
-    uniform vec2 u_mouse;
     uniform float u_time;
 
     vec2 mapUV(vec2 coord) {
@@ -20,15 +19,12 @@ shader =
 
     void main () {
         vec2 uv = mapUV(gl_FragCoord.xy);
-        vec2 mouse = mapUV(u_mouse.xy);
-        // Subtle mouse movement based on mouse distance from center
         uv *= 1.3;
-        uv -= mouse * 0.08 * (1.0 - length(uv));
         float dist = length(uv);
         float angle = atan(uv.y, uv.x);
         float speed = u_time * 3.25;
         // Create circles that rotate CCW based on time
-        float pct = sin(dist * (45.0 - dist * 10.0) + angle - speed);
+        float pct = sin(dist * (55.0 - dist * 15.0) + angle - speed);
         // Solid shapes instead of blurred transitions
         pct = smoothstep(0.0, 0.05, pct);
         vec3 pink = vec3(0.949, 0.153, 0.714);
