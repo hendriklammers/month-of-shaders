@@ -30,6 +30,7 @@ import Shader.Day26 as Day26
 import Shader.Day27 as Day27
 import Shader.Day28 as Day28
 import Shader.Day29 as Day29
+import Shader.Day30 as Day30
 
 
 shaders : List ShaderObject
@@ -63,4 +64,5 @@ shaders =
     , ShaderObject 27 "Purple gradient blocks" "27/08/2017" Day27.shader
     , ShaderObject 28 "Checkerboard tunnel" "28/08/2017" Day28.shader
     , ShaderObject 29 "Dotted tunnel" "29/08/2017" Day29.shader
+    , ShaderObject 30 "Flowers" "30/08/2017" Day30.shader
     ]
