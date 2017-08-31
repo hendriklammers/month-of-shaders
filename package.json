@@ -1,10 +1,9 @@
 {
-  "name": "daily-shader",
+  "name": "month-of-shaders",
   "version": "1.0.0",
-  "description": "One GLSL shader every day",
+  "description": "One GLSL shader for every day of the month August",
   "scripts": {
-    "start": "elm-live src/Main.elm --output=public/elm.js --dir=public --pushstate --open",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "elm-live src/Main.elm --output=public/elm.js --dir=public --pushstate --open"
   },
   "author": "Hendrik Lammers <lammers@gmail.com> (http://www.hendriklammers.com)",
   "license": "MIT",
