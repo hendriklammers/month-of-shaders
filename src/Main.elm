@@ -114,7 +114,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Window.resizes WindowResize
-        , Keyboard.presses (\keycode -> KeyPress keycode)
+        , Keyboard.ups (\keycode -> KeyPress keycode)
         , pausableSubscriptions model.paused
         ]
 
