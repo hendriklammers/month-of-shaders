@@ -2,4 +2,4 @@
 *.log
 node_modules
 elm-stuff
-public/elm.js
+public/js/elm.js
