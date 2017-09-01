@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "One GLSL shader for every day of the month August",
   "scripts": {
-    "start": "elm-live src/Main.elm --output=public/elm.js --dir=public --pushstate --open"
+    "start": "elm-live src/Main.elm --output=public/js/elm.js --dir=public --pushstate --open",
+    "build": "elm-make src/Main.elm --output=public/js/elm.js",
+    "clean": "rm -rf public/js",
+    "uglify": "uglifyjs public/js/elm.js -c -m -o public/js/elm.min.js",
+    "dist": "npm run clean && npm run build && npm run uglify"
   },
   "author": "Hendrik Lammers <lammers@gmail.com> (http://www.hendriklammers.com)",
   "license": "MIT",
