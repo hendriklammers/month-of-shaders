@@ -9,5 +9,8 @@
   "license": "MIT",
   "devDependencies": {
     "elm-live": "^2.7.4"
+  },
+  "dependencies": {
+    "uglify-js": "^3.0.28"
   }
 }
