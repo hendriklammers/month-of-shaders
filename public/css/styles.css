@@ -23,12 +23,22 @@ ul {
   top: 0;
   bottom: 0;
   right: 0;
+  width: auto;
+}
+
+.navigation__list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100%;
+  width: auto;
   background: #fff;
 }
 
 .navigation__item {
   position: relative;
-  font-size: 14px;
+  height: 24px;
+  font-size: 13px;
   line-height: 24px;
   color: #333;
 }
@@ -61,7 +71,8 @@ ul {
   right: 32px;
   top: 0;
   padding: 0 5px 0 8px;
-  background: #fff;
+  background: #000;
+  color: #fff;
   line-height: 24px;
   transition: all 0.10s ease-out;
   transform: translateX(-8px);
@@ -85,7 +96,7 @@ ul {
   height: 0;
   border-style: solid;
   border-width: 12px 0 12px 12px;
-  border-color: transparent transparent transparent #ffffff;
+  border-color: transparent transparent transparent #000;
 }
 
 .pause {
