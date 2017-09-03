@@ -217,7 +217,7 @@ viewTooltip str =
 viewNavigation : Model -> Html Msg
 viewNavigation { shaders, activeShader } =
     nav [ class "navigation" ]
-        [ ul []
+        [ ul [ class "navigation__list" ]
             (List.indexedMap (viewLink activeShader) shaders)
         ]
 
