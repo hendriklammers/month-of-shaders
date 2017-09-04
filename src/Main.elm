@@ -24,6 +24,7 @@ import Window exposing (Size)
 import Keyboard
 import Mouse exposing (Position)
 import Shaders exposing (shaders)
+import List.Extra exposing (getAt, findIndex, elemIndex)
 
 
 -- MODEL
@@ -82,17 +83,10 @@ update msg model =
             ( { model | time = model.time + time }, Cmd.none )
 
         ChangeShader index ->
-            let
-                active =
-                    selectShader index model.shaders
-            in
-                ( { model | activeShader = active, time = 0 }, Cmd.none )
+            setActiveShader index model ! []
 
-        KeyPress char ->
-            if char == 32 then
-                ( { model | paused = not model.paused }, Cmd.none )
-            else
-                model ! []
+        KeyPress keycode ->
+            handleKeyPresses keycode model
 
         MouseMove position ->
             ( { model | mouse = position }, Cmd.none )
@@ -101,9 +95,74 @@ update msg model =
             ( { model | paused = not model.paused }, Cmd.none )
 
 
-selectShader : Int -> List ShaderObject -> Maybe ShaderObject
-selectShader n shaders =
-    List.head (List.drop n shaders)
+handleKeyPresses : Int -> Model -> ( Model, Cmd Msg )
+handleKeyPresses keycode model =
+    let
+        updatedModel =
+            case keycode of
+                -- spacebar
+                32 ->
+                    { model | paused = not model.paused }
+
+                -- left arrow
+                37 ->
+                    prevShader model
+
+                -- right arrow
+                39 ->
+                    nextShader model
+
+                _ ->
+                    model
+    in
+        ( updatedModel, Cmd.none )
+
+
+nextShader : Model -> Model
+nextShader model =
+    case model.activeShader of
+        Just shader ->
+            case elemIndex shader model.shaders of
+                Just index ->
+                    setActiveShader (index + 1) model
+
+                Nothing ->
+                    model
+
+        Nothing ->
+            model
+
+
+prevShader : Model -> Model
+prevShader model =
+    case model.activeShader of
+        Just shader ->
+            case elemIndex shader model.shaders of
+                Just index ->
+                    setActiveShader (index - 1) model
+
+                Nothing ->
+                    model
+
+        Nothing ->
+            model
+
+
+setActiveShader : Int -> Model -> Model
+setActiveShader index model =
+    let
+        i =
+            if index < 0 then
+                0
+            else if index >= List.length model.shaders then
+                index - 1
+            else
+                index
+
+        active =
+            getAt i model.shaders
+    in
+        { model | activeShader = active, time = 0 }
 
 
 
