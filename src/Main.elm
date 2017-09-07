@@ -86,40 +86,34 @@ handleKeyPresses keycode model =
 
                 -- left arrow
                 37 ->
-                    prevShader model
+                    jumpToShader -1 model
 
                 -- right arrow
                 39 ->
-                    nextShader model
+                    jumpToShader 1 model
 
+                -- up arrow
+                38 ->
+                    jumpToShader -5 model
+
+                -- down arrow
+                40 ->
+                    jumpToShader 5 model
+
+                -- nextShader model
                 _ ->
                     model
     in
         ( updatedModel, Cmd.none )
 
 
-nextShader : Model -> Model
-nextShader model =
+jumpToShader : Int -> Model -> Model
+jumpToShader position model =
     case model.activeShader of
         Just shader ->
             case elemIndex shader model.shaders of
                 Just index ->
-                    setActiveShader (index + 1) model
-
-                Nothing ->
-                    model
-
-        Nothing ->
-            model
-
-
-prevShader : Model -> Model
-prevShader model =
-    case model.activeShader of
-        Just shader ->
-            case elemIndex shader model.shaders of
-                Just index ->
-                    setActiveShader (index - 1) model
+                    setActiveShader (index + position) model
 
                 Nothing ->
                     model
@@ -135,7 +129,7 @@ setActiveShader index model =
             if index < 0 then
                 0
             else if index >= List.length model.shaders then
-                index - 1
+                List.length model.shaders - 1
             else
                 index
 
