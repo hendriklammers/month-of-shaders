@@ -2,16 +2,7 @@ module Main exposing (..)
 
 import AnimationFrame
 import Html exposing (..)
-import Html.Attributes
-    exposing
-        ( id
-        , width
-        , height
-        , style
-        , href
-        , class
-        , classList
-        )
+import Html.Attributes as H
 import Html.Events exposing (onWithOptions, onClick)
 import Json.Decode as Decode
 import Math.Vector2 exposing (vec2)
@@ -25,6 +16,8 @@ import Mouse exposing (Position)
 import Shaders exposing (shaders)
 import List.Extra exposing (getAt, elemIndex)
 import Mesh exposing (mesh)
+import Svg exposing (Svg, g, svg, rect)
+import Svg.Attributes as S
 
 
 -- Model
@@ -164,13 +157,13 @@ pausableSubscriptions paused =
 
 
 
--- VIEW
+-- View
 
 
 view : Model -> Html Msg
 view model =
     div
-        [ id "container" ]
+        [ H.id "container" ]
         [ viewCanvas model
         , viewNavigation model
         , viewPause model.paused
@@ -181,7 +174,7 @@ viewPause : Bool -> Html Msg
 viewPause paused =
     if paused then
         div
-            [ class "pause" ]
+            [ H.class "pause" ]
             [ span
                 [ onClick PauseClick ]
                 [ text "Paused (Press SPACE to resume)" ]
@@ -206,12 +199,12 @@ viewLink active index shader =
         isActive =
             isShaderActive active shader
     in
-        li [ class "navigation__item" ]
+        li [ H.class "navigation__item" ]
             [ viewTooltip shader.title
             , a
-                [ href "#"
+                [ H.href "#"
                 , onLinkClick (not isActive) (ChangeShader index)
-                , classList
+                , H.classList
                     [ ( "navigation__link", True )
                     , ( "navigation__link--active"
                       , isActive
@@ -225,16 +218,56 @@ viewLink active index shader =
 viewTooltip : String -> Html Msg
 viewTooltip str =
     div
-        [ class "tooltip" ]
+        [ H.class "tooltip" ]
         [ span [] [ text str ] ]
 
 
 viewNavigation : Model -> Html Msg
 viewNavigation { shaders, activeShader } =
-    nav [ class "navigation" ]
-        [ ul [ class "navigation__list" ]
+    nav [ H.class "navigation" ]
+        [ viewNavigationIcon
+        , ul [ H.class "navigation__list" ]
             (List.indexedMap (viewLink activeShader) shaders)
         ]
+
+
+viewNavigationIcon : Svg Msg
+viewNavigationIcon =
+    let
+        block x y =
+            rect
+                [ S.width "3"
+                , S.height "3"
+                , S.x <| toString x
+                , S.y <| toString y
+                , S.fill "#fff"
+                ]
+                []
+    in
+        svg
+            [ S.width "31"
+            , S.height "31"
+            , S.viewBox ("0 0 31 31")
+            ]
+            [ rect
+                [ S.width "31"
+                , S.height "31"
+                , S.fill "#000"
+                , S.fillOpacity "1.0"
+                ]
+                []
+            , g [ S.transform "translate(7,7)" ]
+                [ block 0 0
+                , block 7 0
+                , block 14 0
+                , block 0 7
+                , block 7 7
+                , block 14 7
+                , block 0 14
+                , block 7 14
+                , block 14 14
+                ]
+            ]
 
 
 onLinkClick : Bool -> Msg -> Attribute Msg
@@ -262,10 +295,10 @@ viewCanvas { size, time, activeShader, mouse } =
 
         Just shader ->
             toHtml
-                [ id "canvas"
-                , width size.width
-                , height size.height
-                , style (canvasStyle size.width size.height)
+                [ H.id "canvas"
+                , H.width size.width
+                , H.height size.height
+                , H.style (canvasStyle size.width size.height)
                 ]
                 [ entity
                     vertexShader
@@ -295,7 +328,7 @@ canvasStyle width height =
 
 
 
--- MAIN
+-- Main
 
 
 main : Program Never Model Msg
