@@ -120,9 +120,9 @@ setActiveShader index model =
     let
         i =
             if index < 0 then
-                0
-            else if index >= List.length model.shaders then
                 List.length model.shaders - 1
+            else if index >= List.length model.shaders then
+                0
             else
                 index
 
