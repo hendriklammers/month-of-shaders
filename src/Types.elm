@@ -2,6 +2,29 @@ module Types exposing (..)
 
 import Math.Vector2 exposing (Vec2, vec2)
 import WebGL exposing (Mesh, Shader, entity, toHtml)
+import Time exposing (Time)
+import Window exposing (Size)
+import Mouse exposing (Position)
+
+
+type Msg
+    = WindowResize Size
+    | TimeUpdate Time
+    | ChangeShader Int
+    | KeyPress Int
+    | MouseMove Position
+    | PauseClick
+    | NoOp
+
+
+type alias Model =
+    { size : Size
+    , time : Time
+    , activeShader : Maybe ShaderObject
+    , shaders : List ShaderObject
+    , paused : Bool
+    , mouse : Position
+    }
 
 
 type alias Vertex =

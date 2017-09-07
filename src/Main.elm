@@ -14,37 +14,27 @@ import Html.Attributes
         )
 import Html.Events exposing (onWithOptions, onClick)
 import Json.Decode as Decode
-import Math.Vector2 exposing (Vec2, vec2)
+import Math.Vector2 exposing (vec2)
 import Shader.Vertex exposing (vertexShader)
 import Task
-import Time exposing (Time)
 import Types exposing (..)
-import WebGL exposing (entity, triangles, toHtml, Mesh)
+import WebGL exposing (entity, toHtml)
 import Window exposing (Size)
 import Keyboard
 import Mouse exposing (Position)
 import Shaders exposing (shaders)
-import List.Extra exposing (getAt, findIndex, elemIndex)
+import List.Extra exposing (getAt, elemIndex)
+import Mesh exposing (mesh)
 
 
--- MODEL
-
-
-type alias Model =
-    { size : Size
-    , time : Time
-    , activeShader : Maybe ShaderObject
-    , shaders : List ShaderObject
-    , paused : Bool
-    , mouse : Position
-    }
+-- Model
 
 
 initialModel : Model
 initialModel =
     { size = Size 0 0
     , time = 0
-    , activeShader = List.head <| List.reverse shaders
+    , activeShader = List.head shaders
     , shaders = shaders
     , paused = True
     , mouse = Position 0 0
@@ -57,17 +47,7 @@ init =
 
 
 
--- UPDATE
-
-
-type Msg
-    = WindowResize Size
-    | TimeUpdate Time
-    | ChangeShader Int
-    | KeyPress Int
-    | MouseMove Position
-    | PauseClick
-    | NoOp
+-- Update
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -166,7 +146,7 @@ setActiveShader index model =
 
 
 
--- SUBSCRIPTIONS
+-- Subscriptions
 
 
 subscriptions : Model -> Sub Msg
@@ -187,24 +167,6 @@ pausableSubscriptions paused =
             [ AnimationFrame.diffs TimeUpdate
             , Mouse.moves MouseMove
             ]
-
-
-
--- MESH
-
-
-mesh : Mesh Vertex
-mesh =
-    triangles
-        [ ( (Vertex (vec2 -1 1))
-          , (Vertex (vec2 1 1))
-          , (Vertex (vec2 -1 -1))
-          )
-        , ( (Vertex (vec2 -1 -1))
-          , (Vertex (vec2 1 -1))
-          , (Vertex (vec2 1 1))
-          )
-        ]
 
 
 
