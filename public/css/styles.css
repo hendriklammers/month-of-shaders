@@ -1,13 +1,17 @@
 html {
+  box-sizing: border-box;
   height: 100%;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  font-family: Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: 'Inconsolata', monospace;
   background: #000;
   color: #fff;
 }
@@ -20,34 +24,46 @@ ul {
 
 .navigation {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: auto;
+  top: 10px;
+  right: 10px;
+}
+
+.navigation:hover .navigation__list {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility linear,
+    opacity ease-out 0.2s;
 }
 
 .navigation__list {
+  visibility: hidden;
+  opacity: 0;
+  z-index: 2;
   display: flex;
-  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 0;
+  flex-direction: row;
   flex-wrap: wrap;
-  height: 100%;
-  width: auto;
+  height: auto;
+  width: 150px;
   background: #fff;
+  transition: 0.15s all 0.2s ease-out;
 }
 
 .navigation__item {
   position: relative;
-  height: 24px;
-  font-size: 13px;
-  line-height: 24px;
+  height: 30px;
+  font-size: 16px;
+  line-height: 30px;
   color: #333;
 }
 
 .navigation__link {
   position: relative;
   display: block;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   text-align: center;
   text-decoration: none;
   transition: all 0.15s ease-out;
@@ -68,21 +84,24 @@ ul {
   opacity: 0;
   z-index: 2;
   position: absolute;
-  right: 32px;
-  top: 0;
+  right: 38px;
+  top: 3px;
   padding: 0 5px 0 8px;
   background: #000;
   color: #fff;
   line-height: 24px;
-  transition: all 0.10s ease-out;
+  transition: 0.1s all 0.10s ease-out;
   transform: translateX(-8px);
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .navigation__item:hover .tooltip {
   visibility: visible;
   opacity: 1;
-  transition: visibility 0s linear 0.2s, opacity 0.10s ease-out 0.2s, transform 0.15s ease-out 0.2s;
+  transition: visibility 0s linear 0.2s,
+    opacity 0.10s ease-out 0.2s,
+    transform 0.15s ease-out 0.2s;
   transform: translateX(0);
 }
 
@@ -103,9 +122,11 @@ ul {
   position: fixed;
   left: 10px;
   top: 10px;
-  font-size: 18px;
-  font-weight: 400;
+  padding: 0 8px;
+  background: #000;
+  font-size: 21px;
   color: #fff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  height: 31px;
+  line-height: 31px;
   cursor: pointer;
 }
