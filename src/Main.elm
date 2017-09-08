@@ -222,10 +222,28 @@ viewTooltip str =
         [ span [] [ text str ] ]
 
 
+viewCurrent : Maybe ShaderObject -> List ShaderObject -> Html Msg
+viewCurrent activeShader shaders =
+    case activeShader of
+        Just shader ->
+            case elemIndex shader shaders of
+                Just index ->
+                    div
+                        [ H.class "navigation__current" ]
+                        [ text <| toString <| index + 1 ]
+
+                Nothing ->
+                    text ""
+
+        Nothing ->
+            text ""
+
+
 viewNavigation : Model -> Html Msg
 viewNavigation { shaders, activeShader } =
     nav [ H.class "navigation" ]
-        [ viewNavigationIcon
+        [ viewCurrent activeShader shaders
+        , viewNavigationIcon
         , ul [ H.class "navigation__list" ]
             (List.indexedMap (viewLink activeShader) shaders)
         ]
