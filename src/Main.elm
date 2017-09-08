@@ -29,7 +29,7 @@ initialModel =
     , time = 0
     , activeShader = 0
     , shaders = shaders
-    , paused = True
+    , paused = False
     , mouse = Position 0 0
     }
 
