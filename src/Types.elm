@@ -20,7 +20,7 @@ type Msg
 type alias Model =
     { size : Size
     , time : Time
-    , activeShader : Maybe ShaderObject
+    , activeShader : Int
     , shaders : List ShaderObject
     , paused : Bool
     , mouse : Position
