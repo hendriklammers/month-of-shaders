@@ -22,10 +22,17 @@ ul {
   list-style: none;
 }
 
+svg {
+  display: block;
+}
+
 .navigation {
+  display: flex;
   position: fixed;
   top: 10px;
   right: 10px;
+  width: 64px;
+  border: 1px solid #fff;
 }
 
 .navigation:hover .navigation__list {
@@ -41,23 +48,22 @@ ul {
   z-index: 2;
   display: flex;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -1px;
+  right: -1px;
   flex-direction: row;
   flex-wrap: wrap;
   height: auto;
-  width: 150px;
+  width: 152px;
   background: #fff;
   transition: 0.15s all 0.2s ease-out;
+  border: 1px solid #fff;
 }
 
 .navigation__current {
-  position: absolute;
-  top: 0;
   right: 31px;
   width: 31px;
   height: 31px;
-  background: #fff;
+  background: #ddd;
   font-size: 16px;
   line-height: 31px;
   text-align: center;
@@ -137,9 +143,10 @@ ul {
   top: 10px;
   padding: 0 8px;
   background: #000;
+  border: 1px solid #fff;
   font-size: 20px;
   color: #fff;
-  height: 31px;
+  height: 33px;
   line-height: 31px;
   cursor: pointer;
 }
