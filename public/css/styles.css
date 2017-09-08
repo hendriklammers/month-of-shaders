@@ -51,6 +51,19 @@ ul {
   transition: 0.15s all 0.2s ease-out;
 }
 
+.navigation__current {
+  position: absolute;
+  top: 0;
+  right: 31px;
+  width: 31px;
+  height: 31px;
+  background: #fff;
+  font-size: 16px;
+  line-height: 31px;
+  text-align: center;
+  color: #000;
+}
+
 .navigation__item {
   position: relative;
   height: 30px;
