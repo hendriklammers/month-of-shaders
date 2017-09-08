@@ -27,9 +27,9 @@ initialModel : Model
 initialModel =
     { size = Size 0 0
     , time = 0
-    , activeShader = List.head shaders
+    , activeShader = 0
     , shaders = shaders
-    , paused = False
+    , paused = True
     , mouse = Position 0 0
     }
 
@@ -79,40 +79,24 @@ handleKeyPresses keycode model =
 
                 -- left arrow
                 37 ->
-                    jumpToShader -1 model
+                    setActiveShader (model.activeShader - 1) model
 
                 -- right arrow
                 39 ->
-                    jumpToShader 1 model
+                    setActiveShader (model.activeShader + 1) model
 
                 -- up arrow
                 38 ->
-                    jumpToShader -5 model
+                    setActiveShader (model.activeShader - 5) model
 
                 -- down arrow
                 40 ->
-                    jumpToShader 5 model
+                    setActiveShader (model.activeShader + 5) model
 
-                -- nextShader model
                 _ ->
                     model
     in
         ( updatedModel, Cmd.none )
-
-
-jumpToShader : Int -> Model -> Model
-jumpToShader position model =
-    case model.activeShader of
-        Just shader ->
-            case elemIndex shader model.shaders of
-                Just index ->
-                    setActiveShader (index + position) model
-
-                Nothing ->
-                    model
-
-        Nothing ->
-            model
 
 
 setActiveShader : Int -> Model -> Model
@@ -125,11 +109,8 @@ setActiveShader index model =
                 0
             else
                 index
-
-        active =
-            getAt i model.shaders
     in
-        { model | activeShader = active, time = 0 }
+        { model | activeShader = i, time = 0 }
 
 
 
@@ -193,11 +174,11 @@ isShaderActive active current =
             False
 
 
-viewLink : Maybe ShaderObject -> Int -> ShaderObject -> Html Msg
+viewLink : Int -> Int -> ShaderObject -> Html Msg
 viewLink active index shader =
     let
         isActive =
-            isShaderActive active shader
+            active == index
     in
         li [ H.class "navigation__item" ]
             [ viewTooltip shader.title
@@ -222,27 +203,17 @@ viewTooltip str =
         [ span [] [ text str ] ]
 
 
-viewCurrent : Maybe ShaderObject -> List ShaderObject -> Html Msg
-viewCurrent activeShader shaders =
-    case activeShader of
-        Just shader ->
-            case elemIndex shader shaders of
-                Just index ->
-                    div
-                        [ H.class "navigation__current" ]
-                        [ text <| toString <| index + 1 ]
-
-                Nothing ->
-                    text ""
-
-        Nothing ->
-            text ""
+viewCurrent : Int -> Html Msg
+viewCurrent index =
+    div
+        [ H.class "navigation__current" ]
+        [ text <| toString <| index + 1 ]
 
 
 viewNavigation : Model -> Html Msg
 viewNavigation { shaders, activeShader } =
     nav [ H.class "navigation" ]
-        [ viewCurrent activeShader shaders
+        [ viewCurrent activeShader
         , viewNavigationIcon
         , ul [ H.class "navigation__list" ]
             (List.indexedMap (viewLink activeShader) shaders)
@@ -306,8 +277,8 @@ onLinkClick enabled msg =
 
 
 viewCanvas : Model -> Html Msg
-viewCanvas { size, time, activeShader, mouse } =
-    case activeShader of
+viewCanvas { size, time, activeShader, shaders, mouse } =
+    case getAt activeShader shaders of
         Nothing ->
             text "No shader available"
 
