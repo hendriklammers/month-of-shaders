@@ -28,6 +28,7 @@ svg {
 
 .navigation {
   display: flex;
+  z-index: 2;
   position: fixed;
   top: 10px;
   right: 10px;
@@ -45,7 +46,7 @@ svg {
 .navigation__list {
   visibility: hidden;
   opacity: 0;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   position: absolute;
   top: -1px;
@@ -101,7 +102,6 @@ svg {
 .tooltip {
   visibility: hidden;
   opacity: 0;
-  z-index: 2;
   position: absolute;
   right: 38px;
   top: 3px;
@@ -124,6 +124,12 @@ svg {
   transform: translateX(0);
 }
 
+@media only screen and (max-width: 640px) {
+  .navigation__item .tooltip {
+    display: none;
+  }
+}
+
 .tooltip::after {
   position: absolute;
   right: -12px;
@@ -139,14 +145,23 @@ svg {
 
 .pause {
   position: fixed;
-  left: 10px;
-  top: 10px;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 0 8px;
   background: #000;
   border: 1px solid #fff;
-  font-size: 20px;
+  font-size: 18px;
   color: #fff;
   height: 33px;
   line-height: 31px;
-  cursor: pointer;
+  white-space: nowrap;
 }
+
+@media only screen and (max-width: 640px) {
+  .pause {
+    font-size: 16px;
+  }
+}
+
