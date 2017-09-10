@@ -223,7 +223,19 @@ viewNavigation { shaders, activeShader } =
 viewNavigationIcon : Svg Msg
 viewNavigationIcon =
     let
-        block x y =
+        positions =
+            [ ( 0, 0 )
+            , ( 7, 0 )
+            , ( 14, 0 )
+            , ( 0, 7 )
+            , ( 7, 7 )
+            , ( 14, 7 )
+            , ( 0, 14 )
+            , ( 7, 14 )
+            , ( 14, 14 )
+            ]
+
+        block ( x, y ) =
             rect
                 [ S.width "3"
                 , S.height "3"
@@ -246,16 +258,7 @@ viewNavigationIcon =
                 ]
                 []
             , g [ S.transform "translate(7,7)" ]
-                [ block 0 0
-                , block 7 0
-                , block 14 0
-                , block 0 7
-                , block 7 7
-                , block 14 7
-                , block 0 14
-                , block 7 14
-                , block 14 14
-                ]
+                (List.map block positions)
             ]
 
 
