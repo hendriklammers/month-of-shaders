@@ -155,10 +155,10 @@ viewPause : Bool -> Html Msg
 viewPause paused =
     if paused then
         div
-            [ H.class "pause" ]
+            [ H.class "pause", onClick PauseClick ]
             [ span
-                [ onClick PauseClick ]
-                [ text "Paused (Press SPACE to resume)" ]
+                []
+                [ text "Paused (Click or press SPACE to resume)" ]
             ]
     else
         text ""
@@ -291,6 +291,7 @@ viewCanvas { size, time, activeShader, shaders, mouse } =
                 , H.width size.width
                 , H.height size.height
                 , H.style (canvasStyle size.width size.height)
+                , onClick PauseClick
                 ]
                 [ entity
                     vertexShader
