@@ -5,6 +5,7 @@ import WebGL exposing (Mesh, Shader, entity, toHtml)
 import Time exposing (Time)
 import Window exposing (Size)
 import Mouse exposing (Position)
+import Http
 
 
 type Msg
@@ -14,6 +15,7 @@ type Msg
     | KeyPress Int
     | MouseMove Position
     | PauseClick
+    | LoadInfo (Result Http.Error String)
     | NoOp
 
 
@@ -24,6 +26,7 @@ type alias Model =
     , shaders : List ShaderObject
     , paused : Bool
     , mouse : Position
+    , info : Maybe String
     }
 
 

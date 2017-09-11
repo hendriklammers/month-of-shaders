@@ -4,6 +4,7 @@ import AnimationFrame
 import Html exposing (..)
 import Html.Attributes as H
 import Html.Events exposing (onWithOptions, onClick)
+import Http
 import Json.Decode as Decode
 import Math.Vector2 exposing (vec2)
 import Shader.Vertex exposing (vertexShader)
@@ -18,6 +19,7 @@ import List.Extra exposing (getAt, elemIndex)
 import Mesh exposing (mesh)
 import Svg exposing (Svg, g, svg, rect)
 import Svg.Attributes as S
+import Markdown
 
 
 -- Model
@@ -31,12 +33,27 @@ initialModel =
     , shaders = shaders
     , paused = False
     , mouse = Position 0 0
+    , info = Nothing
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( initialModel, Task.perform WindowResize Window.size )
+    ( initialModel
+    , Cmd.batch
+        [ Task.perform WindowResize Window.size
+        , loadInfoText
+        ]
+    )
+
+
+loadInfoText : Cmd Msg
+loadInfoText =
+    let
+        request =
+            Http.getString "info.md"
+    in
+        Http.send LoadInfo request
 
 
 
@@ -66,6 +83,14 @@ update msg model =
 
         PauseClick ->
             ( { model | paused = not model.paused }, Cmd.none )
+
+        LoadInfo result ->
+            case result of
+                Ok text ->
+                    ( { model | info = Just text }, Cmd.none )
+
+                Err _ ->
+                    ( { model | info = Nothing }, Cmd.none )
 
 
 handleKeyPresses : Int -> Model -> ( Model, Cmd Msg )
@@ -144,8 +169,9 @@ pausableSubscriptions paused =
 view : Model -> Html Msg
 view model =
     div
-        [ H.id "container" ]
+        [ H.id "container", H.class "container" ]
         [ viewCanvas model
+        , viewInfo model.info
         , viewNavigation model
         , viewPause model.paused
         ]
@@ -208,6 +234,27 @@ viewCurrent index =
     div
         [ H.class "navigation__current" ]
         [ text <| toString <| index + 1 ]
+
+
+viewInfo : Maybe String -> Html Msg
+viewInfo infoText =
+    case infoText of
+        Just str ->
+            div
+                [ H.class "info" ]
+                [ span
+                    [ H.class "info__icon" ]
+                    [ text "?" ]
+                , div
+                    [ H.class "info__panel" ]
+                    [ Markdown.toHtml
+                        [ H.class "info__text" ]
+                        str
+                    ]
+                ]
+
+        Nothing ->
+            text ""
 
 
 viewNavigation : Model -> Html Msg
