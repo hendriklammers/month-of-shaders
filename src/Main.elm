@@ -184,7 +184,7 @@ viewPause paused =
             [ H.class "pause", onClick PauseClick ]
             [ span
                 []
-                [ text "Paused (Click or press SPACE to resume)" ]
+                [ text "Paused" ]
             ]
     else
         text ""
